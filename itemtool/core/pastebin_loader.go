@@ -1,9 +1,11 @@
-package main
+package core
 
 import (
+	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -23,22 +25,21 @@ func pastebinNormalToRaw(url string) string {
 
 func loadBuildData(url string) (string, error) {
 	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Add("js.fetch:mode", "no-cors")
-
 	if err != nil {
 		return "", err
+	}
+	if runtime.GOARCH == "wasm" {
+		req.Header.Add("js.fetch:mode", "cors")
 	}
 
 	response, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
 		return "", err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
-		return "", err
+		return "", errors.New("Bad status code: " + strconv.Itoa(response.StatusCode))
 	}
-
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return "", err

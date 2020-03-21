@@ -1,0 +1,19 @@
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<script src="wasm_exec.js"></script>
+	<script>
+		const go = new Go();
+		WebAssembly.instantiateStreaming(fetch("itemtool.wasm"), go.importObject).then((result) => {
+			console.log("Wasm binary loaded!");
+			go.run(result.instance);
+		}).catch((e) => {
+			console.log(e);
+		})
+	</script>
+</head>
+
+<body></body>
+
+</html>

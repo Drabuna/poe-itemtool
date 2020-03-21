@@ -1,10 +1,10 @@
-package main
+package core
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -21,8 +21,6 @@ func FetchItemImportUrl(item Item, league string, mode string, undercut int, upp
 	payloadData += "uppercut=" + strconv.Itoa(uppercut) + "&"
 	payloadData += "name=" + escapeData(item.Name)
 
-	fmt.Println(payloadData)
-
 	payload := strings.NewReader(payloadData)
 
 	client := &http.Client{
@@ -30,9 +28,15 @@ func FetchItemImportUrl(item Item, league string, mode string, undercut int, upp
 			return http.ErrUseLastResponse
 		}}
 	req, err := http.NewRequest(method, poeTradeUrl, payload)
+
 	if err != nil {
 		return "", err
 	}
+
+	if runtime.GOARCH == "wasm" {
+		req.Header.Add("js.fetch:mode", "cors")
+	}
+
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	res, err := client.Do(req)
