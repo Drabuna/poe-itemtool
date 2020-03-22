@@ -4,13 +4,16 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"runtime"
 	"strconv"
-	"strings"
 )
 
 func LoadDataFromPastebinUrl(url string) (string, error) {
-	rawUrl := pastebinNormalToRaw(url)
+	rawUrl, err := validateAndTransformUrl(url)
+	if err != nil {
+		return "", err
+	}
 	data, err := loadBuildData(rawUrl)
 	if err != nil {
 		return "", err
@@ -18,9 +21,28 @@ func LoadDataFromPastebinUrl(url string) (string, error) {
 	return data, nil
 }
 
-func pastebinNormalToRaw(url string) string {
-	rawUrl := strings.Replace(url, "pastebin.com/", "pastebin.com/raw/", 1)
-	return rawUrl
+func validateAndTransformUrl(link string) (string, error) {
+	u, err := url.Parse(link)
+	if err != nil {
+		return "", err
+	}
+
+	if u.Scheme != "https" {
+		u.Scheme = "https"
+		return validateAndTransformUrl(u.String())
+	}
+
+	if u.Host != "pastebin.com" {
+		return "", errors.New("Provided unsupported hostname " + u.Host + ", please use pastebin.com")
+	}
+
+	if len(u.Path) == 0 || u.Path == "/" {
+		return "", errors.New("Provided URL is invalid")
+	}
+
+	u.Path = "/raw" + u.Path
+
+	return u.String(), nil
 }
 
 func loadBuildData(url string) (string, error) {

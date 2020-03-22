@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"log"
+	"regexp"
 	"strings"
 )
 
@@ -38,11 +39,13 @@ func ParseItem(pobItem PobItem) (Item, error) {
 
 	lines := strings.Split(pobItem.Text, "\n")
 
-	//remove empty lines and trim spaces
+	//remove empty lines and trim spaces, and other special modifies and meta info like {stuff}
+	cbracketsRegexp := regexp.MustCompile(`\{(.*?)\}`)
 	cleanLines := []string{}
 	for _, line := range lines {
 		tmpLine := strings.TrimSpace(line)
 		if len(tmpLine) > 0 {
+			tmpLine = cbracketsRegexp.ReplaceAllString(tmpLine, "")
 			cleanLines = append(cleanLines, tmpLine)
 		}
 	}

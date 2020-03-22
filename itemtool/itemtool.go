@@ -1,8 +1,6 @@
 package itemtool
 
 import (
-	"log"
-
 	"github.com/drabuna/poebuildbuyer/itemtool/core"
 )
 
@@ -38,14 +36,14 @@ func GetBuildItemsLinks(pastebinURL string) ([]ItemInfo, error) {
 	if err != nil {
 		return nil, err
 	}
+	return GetBuildItemsLinksFromData(data)
+}
 
+func GetBuildItemsLinksFromData(data string) ([]ItemInfo, error) {
 	pob, err := core.ExtractPathOfBuildingData(data)
 	if err != nil {
 		return nil, err
 	}
-
-	log.Print("Got ", len(pob.Items.List), " items")
-
 	items, err := core.ParseItems(pob.Items.List)
 	if err != nil {
 		return nil, err

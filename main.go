@@ -10,10 +10,7 @@ func main() {
 
 	log.Println("Starting...")
 
-	//https://pastebin.com/qJhJdWkP - article build
-	//https://pastebin.com/Xx3EAYWC - witch build
-
-	items, err := itemtool.GetBuildItemsLinks("https://pastebin.com/Xx3EAYWC")
+	items, err := itemtool.GetBuildItemsLinks("pastebin.com/qJhJdWkP")
 	if err != nil {
 		log.Fatal(err)
 	}
