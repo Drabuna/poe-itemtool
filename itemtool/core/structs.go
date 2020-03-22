@@ -2,7 +2,7 @@ package core
 
 import "encoding/xml"
 
-const ITEM_LB = "\n"
+const ITEM_LB = "\r\n"
 const ITEM_SECTIONS_SEPERATOR = "--------" + ITEM_LB
 
 type PathOfBuilding struct {

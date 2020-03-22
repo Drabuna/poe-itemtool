@@ -51,6 +51,5 @@ func FetchItemImportUrl(item Item, league string, mode string, undercut int, upp
 
 func escapeData(d string) string {
 	res := url.QueryEscape(d)
-	res = strings.ReplaceAll(res, "%0A", "%0D%0A")
 	return res
 }
