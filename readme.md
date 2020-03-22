@@ -6,15 +6,20 @@ Currently only availiable as a CLI tool.
 # How to use
 
 Download latest release binary from [releases](https://github.com/Drabuna/poe-itemtool/releases) 
+
 Run it from terminal on Mac:
+
 `./poeit get pastebin.com/qJhJdWkP`
 
 or from command line on Windows:
+
 `poeit.exe get pastebin.com/qJhJdWkP`
 
 # Building 
 Or clone the repo and then:
+
 `go get`
+
  - On Mac: 
 	 - `make cli_build_mac`
 	 - `./out/cli/poeit get pastebin.com/qJhJdWkP`
