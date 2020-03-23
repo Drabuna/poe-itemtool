@@ -48,13 +48,13 @@ start:
 
 #CLI stuff
 cli_build:
-	go build -o out/cli/${cli_target} ./itemtool/cli/cli.go 
+	go build -ldflags="-s -w" -o out/cli/${cli_target} ./itemtool/cli/cli.go 
 
 cli_build_win:
 ifdef is_mac 
-	GOOS=windows go build -o out/cli/${cli_bin_name}.exe ./itemtool/cli/cli.go 
+	GOOS=windows go build -ldflags="-s -w" -o out/cli/${cli_bin_name}.exe ./itemtool/cli/cli.go 
 else 
-	go build -o out/cli/${cli_bin_name}.exe ./itemtool/cli/cli.go 
+	go build -ldflags="-s -w" -o out/cli/${cli_bin_name}.exe ./itemtool/cli/cli.go 
 endif
 
 

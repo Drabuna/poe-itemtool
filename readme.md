@@ -29,7 +29,7 @@ Or clone the repo and then:
 
 - On Windows:
 
-`poeit.exe get pastebin.com/qJhJdWkP`
+`.\poeit get pastebin.com/qJhJdWkP`
 
 # Flags
 
