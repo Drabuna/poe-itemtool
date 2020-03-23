@@ -23,14 +23,31 @@ Or clone the repo and then:
 
 `make cli_build`
 
-- On Mac: - `./out/cli/poeit get pastebin.com/qJhJdWkP`
-- On Windows: - `poeit.exe get pastebin.com/qJhJdWkP`
+- On Mac:
+
+`./out/cli/poeit get pastebin.com/qJhJdWkP`
+
+- On Windows:
+
+`poeit.exe get pastebin.com/qJhJdWkP`
 
 # Flags
 
-- Specify base64 data instead of url using `-data` flag - `poeit get -data NrtPWtz2za2n6tfwfFM7yTj2CbAF...`
-- Specify a league to search in using `-league` flag - `poeit get -league "PS4 - Delirium" pastebin.com/qJhJdWkP`
-- Specify a search mode using `-mode` flag - `poeit get -league "Standard" -mode "upgrade" pastebin.com/qJhJdWkP` or `poeit get -league "Standard" -mode "undercut" -low 85 -high 125 pastebin.com/qJhJdWkP`
+- Specify base64 data instead of url using `-data` flag:
+
+`poeit get -data NrtPWtz2za2n6tfwfFM7yTj2CbAF...`
+
+- Specify a league to search in using `-league` flag:
+
+`poeit get -league "PS4 - Delirium" pastebin.com/qJhJdWkP`
+
+- Specify a search mode using `-mode` flag:
+
+`poeit get -league "Standard" -mode "upgrade" pastebin.com/qJhJdWkP`
+
+or
+
+`poeit get -league "Standard" -mode "undercut" -low 85 -high 125 pastebin.com/qJhJdWkP`
 
 # Roadmap
 
