@@ -1,28 +1,10 @@
 package itemtool
 
 import (
+	"log"
+
 	"github.com/drabuna/poebuildbuyer/itemtool/core"
 )
-
-var LEAGUES = []string{
-	"Delirium",
-	"Hardcore Delirium",
-	"Standard",
-	"Hardcore",
-	"PS4 - Delirium",
-	"PS4 - Hardcore Delirium",
-	"PS4 - Standard",
-	"PS4 - Hardcore",
-	"Xbox - Delirium",
-	"Xbox - Hardcore Delirium",
-	"Xbox - Standard",
-	"Xbox - Hardcore",
-}
-
-var MODES = []string{
-	"udercut",
-	"upgrade",
-}
 
 type ItemInfo struct {
 	Name  string
@@ -31,27 +13,37 @@ type ItemInfo struct {
 	Item  core.Item
 }
 
-func GetBuildItemsLinks(pastebinURL string) ([]ItemInfo, error) {
-	data, err := core.LoadDataFromPastebinUrl(pastebinURL)
-	if err != nil {
-		return nil, err
-	}
-	return GetBuildItemsLinksFromData(data)
+type SearchConfig struct {
+	League   string
+	Mode     string
+	Undercut int
+	Uppercut int
 }
 
-func GetBuildItemsLinksFromData(data string) ([]ItemInfo, error) {
+func GetBuildItemsLinks(pastebinURL string, config SearchConfig) ([]ItemInfo, error) {
+	data, err := core.LoadDataFromPastebinUrl(pastebinURL)
+	if err != nil {
+		log.Println("Failed to load Pastebin data")
+		return nil, err
+	}
+	return GetBuildItemsLinksFromData(data, config)
+}
+
+func GetBuildItemsLinksFromData(data string, config SearchConfig) ([]ItemInfo, error) {
 	pob, err := core.ExtractPathOfBuildingData(data)
 	if err != nil {
+		log.Println("Failed to import PoB data")
 		return nil, err
 	}
 	items, err := core.ParseItems(pob.Items.List)
 	if err != nil {
+		log.Println("Failed to parse items")
 		return nil, err
 	}
 
 	results := []ItemInfo{}
 	for _, item := range items {
-		url, err := core.FetchItemImportUrl(item, LEAGUES[0], MODES[1], 85, 125)
+		url, err := core.FetchItemImportUrl(item, config.League, config.Mode, config.Undercut, config.Uppercut)
 
 		info := ItemInfo{Name: item.Name, Item: item}
 

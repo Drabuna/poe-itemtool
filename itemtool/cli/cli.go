@@ -9,17 +9,47 @@ import (
 )
 
 func main() {
+	data := ""
+	searchConf := itemtool.SearchConfig{}
+
 	app := &cli.App{
-		Name: "Path of Exile Item Tool",
+		Name:     "Path of Exile Item Tool",
+		HideHelp: false,
+
 		Commands: []*cli.Command{
 			{
 				Name:      "get",
 				Usage:     "Gets links to the items from PoB pastebin URL or PoB exported data.",
-				UsageText: "poeit get [URL] [arguments...]  ",
+				UsageText: "poeit get [arguments...] [URL]  ",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "data",
-						Usage: "Exported build data from Path of Building",
+						Name:        "data",
+						Usage:       "Exported build data from Path of Building",
+						Destination: &data,
+					},
+					&cli.StringFlag{
+						Name:        "league",
+						Value:       "Delirium",
+						Usage:       "League to search in. Supported values: 'Delirium','Hardcore Delirium','Standard','Hardcore','PS4 - Delirium','PS4 - Hardcore Delirium','PS4 - Standard','PS4 - Hardcore','Xbox - Delirium','Xbox - Hardcore Delirium','Xbox - Standard','Xbox - Hardcore'",
+						Destination: &searchConf.League,
+					},
+					&cli.StringFlag{
+						Name:        "mode",
+						Value:       "upgrade",
+						Usage:       "Search mode to use. Supported values: 'upgrade', 'undercut'. If 'undercut' is used, can specify low and high parameters",
+						Destination: &searchConf.Mode,
+					},
+					&cli.IntFlag{
+						Name:        "low",
+						Value:       85,
+						Usage:       "Controls the lower bound of undercut search.",
+						Destination: &searchConf.Undercut,
+					},
+					&cli.IntFlag{
+						Name:        "high",
+						Value:       125,
+						Usage:       "Controls the upper bound of undercut search.",
+						Destination: &searchConf.Uppercut,
 					},
 				},
 				Action: func(c *cli.Context) error {
@@ -28,15 +58,15 @@ func main() {
 					}
 
 					//load from base64 input instead
-					if c.String("data") != "" {
-						items, err := itemtool.GetBuildItemsLinksFromData(c.String("data"))
+					if data != "" {
+						items, err := itemtool.GetBuildItemsLinksFromData(data, searchConf)
 						if err != nil {
 							log.Fatalln(err)
 						}
 						printItems(items)
 					} else {
 						link := c.Args().First()
-						items, err := itemtool.GetBuildItemsLinks(link)
+						items, err := itemtool.GetBuildItemsLinks(link, searchConf)
 						if err != nil {
 							log.Fatalln(err)
 						}

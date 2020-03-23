@@ -10,7 +10,7 @@ func main() {
 
 	log.Println("Starting...")
 
-	items, err := itemtool.GetBuildItemsLinks("pastebin.com/qJhJdWkP")
+	items, err := itemtool.GetBuildItemsLinks("pastebin.com/qJhJdWkP", itemtool.SearchConfig{League: "Delirium", Mode: "upgrade"})
 	if err != nil {
 		log.Fatal(err)
 	}

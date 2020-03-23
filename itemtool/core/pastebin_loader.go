@@ -60,7 +60,7 @@ func loadBuildData(url string) (string, error) {
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
-		return "", errors.New("Bad status code: " + strconv.Itoa(response.StatusCode))
+		return "", errors.New("HTTP code: " + strconv.Itoa(response.StatusCode))
 	}
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
