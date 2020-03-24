@@ -90,7 +90,7 @@ func ParseItem(pobItem PobItem) (Item, error) {
 		if isItemProperty(line) {
 			key, value, success := parseItemPropety(line)
 			if !success || len(key) == 0 || len(value) == 0 {
-				log.Println("Couldn't extracrt property from line:", line, "at index: ", index)
+				log.Println("Couldn't extract property from line:", line, "at index: ", index)
 			} else {
 				properties[key] = value
 			}
